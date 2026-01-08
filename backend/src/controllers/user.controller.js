@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { name, email, password ,role} = req.body;
+    if (!name || !email || !password || !role) {
       return res.status(400).json({ message: "All fields are required" });
     }
     if (password.length < 6) {
@@ -22,6 +22,7 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      role,
     });
     await newUser.save();
     return res.status(201).json({ message: "User registered successfully" });
@@ -32,9 +33,9 @@ export const registerUser = async (req, res) => {
 };
 export const loginUser =  async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password ,role} = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email ,role});
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -65,8 +66,8 @@ export const loginUser =  async (req, res) => {
 };
 export const logoutUser = async (req, res) => {
   try {
-    // Invalidate the token on the client side by removing i
-    //t from local storage or cookies.
+    // Invalidate the token on the client side by removing it
+    // from local storage or cookies.
     return res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.error("logout error:", error);
