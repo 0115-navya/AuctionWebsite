@@ -20,5 +20,9 @@ app.use(cookieParser())
 });*/
 import userRouter from './routes/user.routes.js'
 app.use("/api/v1/users", userRouter)
+import auctionRoutes from "./routes/auction.routes.js";
+
+app.use("/api/v1/auctions", auctionRoutes);
+
 
 export {app}
