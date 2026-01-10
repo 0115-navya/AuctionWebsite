@@ -12,7 +12,7 @@ const auctionSchema = new mongoose.Schema(
       required: true,
     },
     Image: {
-      type: String, 
+      type: String,
       required: true,
     },
     startingPrice: {
@@ -22,6 +22,10 @@ const auctionSchema = new mongoose.Schema(
     currentPrice: {
       type: Number,
       default: 0,
+    },
+    highestBidder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     startTime: {
       type: Date,
@@ -45,4 +49,3 @@ const auctionSchema = new mongoose.Schema(
 );
 
 export const Auction = mongoose.model("Auction", auctionSchema);
- 

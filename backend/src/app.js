@@ -24,5 +24,10 @@ import auctionRoutes from "./routes/auction.routes.js";
 
 app.use("/api/v1/auctions", auctionRoutes);
 
+import bidRoutes from "./routes/bid.routes.js";
+
+app.use("/api/v1/bids", bidRoutes);
+
+
 
 export {app}
