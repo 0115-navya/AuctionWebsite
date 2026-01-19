@@ -11,10 +11,6 @@ const auctionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    Image: {
-      type: String,
-      required: true,
-    },
     startingPrice: {
       type: Number,
       required: true,
@@ -34,11 +30,6 @@ const auctionSchema = new mongoose.Schema(
     endTime: {
       type: Date,
       required: true,
-    },
-    status: {
-      type: String,
-      enum: ["upcoming", "live", "ended"],
-      default: "upcoming",
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
