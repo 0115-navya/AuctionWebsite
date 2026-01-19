@@ -1,5 +1,5 @@
 import express from "express";
-import { verifJWT, adminOnly } from "../middlewares/auth.middleware.js";
+import { verifyJWT, adminOnly } from "../middlewares/auth.middleware.js";
 
 import {
   createAuction,
@@ -13,7 +13,7 @@ const router = express.Router();
 router.get("/", getAllAuctions);
 
 // Admin-only route
-router.post("/create", verifJWT, adminOnly, createAuction);
+router.post("/create", verifyJWT, adminOnly, createAuction);
 
 
 export default router;

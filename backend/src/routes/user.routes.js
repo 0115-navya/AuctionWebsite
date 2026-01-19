@@ -1,20 +1,17 @@
 import { Router } from "express";
-import { registerUser, loginUser, logoutUser } from "../controllers/user.controller.js";
-import {verifJWT} from "../middlewares/auth.middleware.js";
+import { registerUser, loginUser, logoutUser,changePassword,getProfile} from "../controllers/user.controller.js";
+import {verifyJWT} from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/logout", logoutUser);
+router.post("/logout", verifyJWT, logoutUser);
+router.post("/change_password/:userId", verifyJWT, changePassword);
 
 
-router.get("/profile", verifJWT, (req, res) => {
-  res.status(200).json({
-    message: "Protected route accessed",
-    user: req.user,
-  });
-});
+
+router.get("/profile", verifyJWT, getProfile);
 
 
 export default router;

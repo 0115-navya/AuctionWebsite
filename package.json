@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "multer": "^2.0.2"
+    "@reduxjs/toolkit": "^2.11.2",
+    "axios": "^1.13.2",
+    "multer": "^2.0.2",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.12.0"
   }
 }
