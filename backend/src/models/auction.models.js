@@ -19,10 +19,12 @@ const auctionSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    highestBidder: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    status:{
+      type: String,
+      enum: ['upcoming', 'live', 'ended'],
+      default: 'upcoming'
     },
+
     startTime: {
       type: Date,
       required: true,
@@ -30,6 +32,20 @@ const auctionSchema = new mongoose.Schema(
     endTime: {
       type: Date,
       required: true,
+    },
+    
+    highestBidder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    highestBid: {
+      type: Number,
+      default: 0,
+    },
+    winner:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

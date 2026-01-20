@@ -6,7 +6,10 @@ export const placeBid = async (req, res) => {
   try {
     const { auctionId } = req.params;
     const { amount } = req.body;
-
+    
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ message: "Invalid bid amount" });
+    }
     const auction = await Auction.findById(auctionId);
 
     if (!auction) {
@@ -19,7 +22,7 @@ export const placeBid = async (req, res) => {
     );
 
     if (status !== "live") {
-      return res.status(400).json({ message: "Auction is not live" });
+      return res.status(400).json({ message: `Auction is ${status} not live` });
     }
 
     if (amount <= auction.currentPrice) {
@@ -35,6 +38,7 @@ export const placeBid = async (req, res) => {
     });
 
     auction.currentPrice = amount;
+    auction.highestBid = amount;
     auction.highestBidder = req.user._id;
     await auction.save();
 
@@ -51,9 +55,49 @@ export const getBidsForAuction = async (req, res) => {
     const { auctionId } = req.params;
     const bids = await Bid.find({ auction: auctionId })
       .populate("bidder", "username email")
-      .sort({ amount: -1 });
-    return res.status(200).json(bids);
+      .sort({ amount: -1 , createdAt: -1 });
+    return res.status(200)
+    .json({
+      count:bids.length,
+      bids,
+    }); 
     } catch (error) {
     return res.status(500).json({ message: "Server error" });
     }
+};
+export const closeAuction = async (req, res) => {
+  try {
+    const { auctionId } = req.params;
+    const auction = await Auction.findById(auctionId);
+
+    if (!auction) {
+      return res.status(404).json({ message: "Auction not found" });
+    }
+
+    if (auction.status === "ENDED") {
+      return res.status(400).json({ message: "Auction already ended" });
+    }
+
+    const highestBid = await Bid.findOne({ auction: auctionId })
+      .sort({ amount: -1 });
+
+    if (highestBid) {
+      auction.highestBid = highestBid.amount;
+      auction.highestBidder = highestBid.user;
+      auction.winner = highestBid.user;
+    }
+
+    auction.status = "ended";
+    await auction.save();
+
+    res.status(200).json({
+      message: "Auction closed successfully",
+      winner: highestBid ? highestBid.user : null,
+      highestBid: highestBid ? highestBid.amount : 0,
+
+    });
+  } catch (error) {
+    console.error("close auction error:", error);
+    res.status(500).json({ message: "Server error" ,error: error.message});
+  }
 };

@@ -59,10 +59,12 @@ export const getAuctionById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const auction = await Auction.findById(id).populate(
+    const auction = await Auction.findById(id)
+    .populate(
       "createdBy",
       "name email role"
-    );
+    )
+    .populate("highestBidder", "name email");
 
     if (!auction) {
       return res.status(404).json({ message: "Auction not found" });
