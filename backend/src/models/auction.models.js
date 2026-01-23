@@ -33,20 +33,22 @@ const auctionSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    
-    highestBidder: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    highestBid: {
-      type: Number,
-      default: 0,
-    },
     winner:{
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       default: null,
+    }, 
+    
+    highestBid: {
+      type: Number,
+      default: 0,
     },
+    highestBidder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+   
+    
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
